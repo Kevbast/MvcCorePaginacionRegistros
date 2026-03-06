@@ -4,6 +4,23 @@
     <hr />
     @Html.Raw(ViewData["LINKS"])
 
+
+
+@{
+    int numPagina = 1;
+    int numRegistros = (int) @ViewData["NUMREGISTRO"];
+
+    //ViewData["LINKS"] = html;
+
+    }
+
+    @for (int i = 1; i < numRegistros; i += 2)
+    {//ESTAMOS PAGINANDO DE 2 EN 2
+ <a asp-action="GrupoVistaDepartamentos" asp-route-posicion=@i>Página:@numRegistros"</a>
+        numPagina += 1;
+    }
+
+
 @if (Model != null)
 {
     <table class="table table-bordered">

@@ -54,19 +54,7 @@ namespace MvcCorePaginacionRegistros.Controllers
             //<a href='grupodepts?posicion=5'>Pagina 3</a>
             //NECESITAMOS UNA VARIABLE PARA EL NUMNUMERO DE PAGINA
             //VOY A REALIZAR EL DIBUJO DESDE AQUÍ,NO DESDE RAZOR
-            int numPagina = 1;
-            int numRegistros = await this.repo.GetNumerosRegistrosVistaDepartamentosAsync();
-            string html = "<div>";
-
-            for (int i = 1; i < numRegistros; i += 2)
-            {//ESTAMOS PAGINANDO DE 2 EN 2
-                html += "<a href='GrupoVistaDepartamentos?posicion="
-                    + i + "'>Página " + numPagina + "</a>";           //1,3,5,7,9
-                numPagina += 1;
-            }
-
-            html += "</div>";
-            ViewData["LINKS"] = html;
+            ViewData["NUMREGISTRO"] = await this.repo.GetNumerosRegistrosVistaDepartamentosAsync();
             List<VistaDepartamento> departamentos =
                 await this.repo.GetGrupoVistaDepartamento(posicion.Value);
             return View(departamentos);

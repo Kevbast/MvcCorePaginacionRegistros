@@ -1,0 +1,50 @@
+﻿@model List<Departamento>
+
+<h1 style="color:blueviolet"> Paginación en grupo</h1>
+<hr />
+@Html.Raw(ViewData["LINKS"])
+
+
+
+@{
+    int numPagina = 1;
+    int numRegistros = (int)@ViewData["NUMREGISTRO"];
+
+    //ViewData["LINKS"] = html;
+
+}
+
+@for (int i = 1; i < numRegistros; i += 2)
+{//ESTAMOS PAGINANDO DE 2 EN 2
+ <a asp-action="GrupoDepartamentos" asp-route-posicion=@i>Página: @numPagina "</a>
+    numPagina += 1;
+}
+
+
+@if (Model != null)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NOMBRE</th>
+                <th>LOCALIDAD</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Departamento dept in Model)
+            {
+                <tr>
+                    <td>@dept.IdDepartamento</td>
+                    <td>@dept.Nombre </td>
+                    <td> @dept.Localidad </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+else
+{
+    <h2>NO SE CARGAN LOS DEPARTAMENTOS</h2>
+}

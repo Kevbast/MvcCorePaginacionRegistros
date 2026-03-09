@@ -64,5 +64,103 @@ namespace MvcCorePaginacionRegistros.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> GrupoDepartamentos(int? posicion)
+        {
+            if (posicion == null)
+                posicion = 1;
+            //LO SIGUIENTE SERA QUE DEBEMOS D LOS NUMERO DE PAGINA EN LOS LINKS
+            //<a href='grupodepts?posicion=1'>Pagina 1</a> 
+            //<a href='grupodepts?posicion=3'>Pagina 2</a> 
+            //<a href='grupodepts?posicion=5'>Pagina 3</a>
+            //NECESITAMOS UNA VARIABLE PARA EL NUMNUMERO DE PAGINA
+            //VOY A REALIZAR EL DIBUJO DESDE AQUÍ,NO DESDE RAZOR
+            ViewData["NUMREGISTRO"] = await this.repo.GetNumerosRegistrosVistaDepartamentosAsync();
+            List<Departamento> departamentos =
+                await this.repo.GetGrupoDepartamentosAsync(posicion.Value);
+            return View(departamentos);
+        }
+
+        public async Task<IActionResult> GrupoEmpleados(int? posicion)
+        {
+            if (posicion == null)
+                posicion = 1;
+            ViewData["NUMREGISTRO"] = await this.repo.GetEmpleadosCountAsync();//numero de registros en EMPLEADO
+            List<Empleado> empleados =
+                await this.repo.GetGrupoEmpleadosAsync(posicion.Value);
+            return View(empleados);
+        }
+
+        //PAGINACION POR OFICIOS
+        public async Task<IActionResult> GrupoEmpleadosOficios(int? posicion,string? oficio)
+        {
+            if (posicion == null)
+            {
+                posicion = 1;
+                return View();
+            }
+            else
+            {
+
+            List<Empleado> empleados =
+                await this.repo.GetGrupoEmpleadosOficiosAsync(posicion.Value,oficio);
+
+            ViewData["NUMREGISTRO"] = await this.repo.GetEmpleadosOficioCountAsync(oficio);//numero de registros en EMPLEADO
+            ViewData["OFICIO"] = oficio;
+            
+            return View(empleados);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> GrupoEmpleadosOficios( string oficio)
+        {
+
+                List<Empleado> empleados =
+                    await this.repo.GetGrupoEmpleadosOficiosAsync(1, oficio);
+
+                ViewData["NUMREGISTRO"] = await this.repo.GetEmpleadosOficioCountAsync(oficio);//numero de registros en EMPLEADO
+                ViewData["OFICIO"] = oficio;
+
+                return View(empleados);
+            
+        }
+
+        //PAGINACION POR OFICIOS OUT
+        public async Task<IActionResult> GrupoEmpleadosOficiosOut(int? posicion, string? oficio)
+        {
+            if (posicion == null)
+            {
+                posicion = 1;
+                return View();
+            }
+            else
+            {
+
+                ModelEmpleadosOficio model=
+                    await this.repo.GetGrupoEmpleadosOficiosOUTAsync(posicion.Value, oficio);
+
+                ViewData["NUMREGISTRO"] = model.NumeroRegistros; //numero de registros en EMPLEADO
+                ViewData["OFICIO"] = oficio;
+
+                return View(model);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> GrupoEmpleadosOficiosOut(string oficio)
+        {
+
+            ModelEmpleadosOficio model =
+                    await this.repo.GetGrupoEmpleadosOficiosOUTAsync(1, oficio);//cambiamos pos por un 1
+
+            ViewData["NUMREGISTRO"] = model.NumeroRegistros; //numero de registros en EMPLEADO
+            ViewData["OFICIO"] = oficio;
+
+            return View(model);
+
+        }
+
+
+
+
     }
 }

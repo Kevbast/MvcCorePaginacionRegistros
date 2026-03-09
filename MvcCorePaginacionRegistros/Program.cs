@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSession();
 
 string connectionstring = builder.Configuration.GetConnectionString("SqlHospital");
 builder.Services.AddTransient<RepositoryHospital>();
@@ -29,6 +29,9 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+//usamos session
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

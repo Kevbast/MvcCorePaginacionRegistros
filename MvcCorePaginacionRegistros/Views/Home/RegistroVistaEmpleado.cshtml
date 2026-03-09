@@ -1,0 +1,37 @@
+﻿@model ModelEmpleadoDeptRegistro
+
+<h1>PAGINACION INDIVIDUAL</h1>
+
+@{
+    int deptno = (int) ViewData["DEPT_NO"];
+}
+
+
+<h3 style="color:blueviolet">
+    Registro @Model.Registros DE @ViewData["ULTIMO"]
+</h3>
+<div>
+    <ul class="list-group list-group-horizontal">
+        <li class="list-group-item">
+            <a asp-controller="Paginacion" asp-action="RegistroVistaEmpleado" asp-route-posicion="1" asp-route-deptno="@deptno">Primero</a>
+        </li>
+        <li class="list-group-item">
+            <a asp-controller="Paginacion" asp-action="RegistroVistaEmpleado"
+               asp-route-posicion="@ViewData["ANTERIOR"]">Anterior</a>
+        </li>
+        <li class="list-group-item">
+            <a asp-controller="Paginacion" asp-action="RegistroVistaEmpleado"
+               asp-route-posicion="@ViewData["SIGUIENTE"]">Siguiente</a>
+        </li>
+        <li class="list-group-item">
+            <a asp-controller="Paginacion" asp-action="RegistroVistaEmpleado"
+               asp-route-posicion="@ViewData["ULTIMO"]">Ultimo</a>
+        </li>
+    </ul>
+</div>
+
+<ul class="list-group">
+    <li class="list-group-item">Número: @Model.Empleado.IdEmpleado</li>
+    <li class="list-group-item">Nombre: @Model.Empleado.Apellido</li>
+    <li class="list-group-item">Localidad: @Model.Empleado.Oficio</li>
+</ul>

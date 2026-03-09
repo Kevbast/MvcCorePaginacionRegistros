@@ -184,6 +184,50 @@ go
 
         }
 
+        //A PARTE PAR LA PRACTICA
+
+        public async Task<List<Departamento>> GetAllDepartamentosAsync()
+        {
+
+            return await this.context.Departamentos.ToListAsync();
+        }
+
+        public async Task<List<Empleado>> GetEmpleadosPorDeptAsync(int iddept)
+        {
+
+            return await this.context.Empleados.Where(z => z.IdDepartamento == iddept).ToListAsync() ;
+        }
+
+        public async Task<int> GetNumerosRegistrosVistaEmpleadosAsync()
+        {
+            return await this.context.VistaEmpleadosIndividual.CountAsync();
+        }
+
+        public async Task<ModelEmpleadoDeptRegistro> GetGrupoVistaEmpleado(int posicion,int deptno)
+        {
+            string sql = "SP_EMPLEADOS_DEPARTAMENTO_REGISTRO @IDDEPARTAMENTO, @POSICION, @REGISTROS OUT";
+
+            SqlParameter pamPosicion = new SqlParameter("@IDDEPARTAMENTO", deptno);
+            SqlParameter pamOficio = new SqlParameter("@POSICION", posicion);
+            SqlParameter pamRegistros = new SqlParameter("@registros", 0);
+
+            pamRegistros.Direction = ParameterDirection.Output;
+            pamRegistros.DbType = DbType.Int32;//lo pasamos a int
+
+            var consulta = this.context.Empleados.FromSqlRaw(sql, pamPosicion, pamOficio, pamRegistros);//3 PARAMS
+
+            List<Empleado> empleados = await consulta.ToListAsync();
+            //HASTA QUE NO HEMOS EXTRAIDO LOS DATOS
+            //NO SE LIBERAN LOS PARAMS DE SALIDA!!
+            int registros = (int) pamRegistros.Value;
+
+            return new ModelEmpleadoDeptRegistro
+            {
+                Empleado = empleados.FirstOrDefault(),
+                Registros = registros
+            };
+        }
+
 
 
 

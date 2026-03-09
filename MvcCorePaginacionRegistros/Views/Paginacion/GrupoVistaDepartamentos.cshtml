@@ -16,7 +16,7 @@
 
     @for (int i = 1; i < numRegistros; i += 2)
     {//ESTAMOS PAGINANDO DE 2 EN 2
- <a asp-action="GrupoVistaDepartamentos" asp-route-posicion=@i>Página:@numRegistros"</a>
+ <a asp-action="GrupoVistaDepartamentos" asp-route-posicion=@i>Página: @numPagina "</a>
         numPagina += 1;
     }
 

@@ -159,6 +159,99 @@ namespace MvcCorePaginacionRegistros.Controllers
 
         }
 
+        //PARA LOS EMPLEADOS DE UN DEPARTAMENTO
+        public async Task<IActionResult> DetailsDepartamento(int iddept, int? posicion)
+        {
+            int numRegistros = await this.repo.EmpleadosCountAsync(iddept);
+
+            if (posicion == null)
+            {
+                posicion = 1;
+            }
+            int siguiente = posicion.Value + 1;
+            if (siguiente > numRegistros)
+            {
+                siguiente = numRegistros;
+            }
+            int anterior = posicion.Value - 1;
+            if (anterior < 1)
+            {
+                anterior = 1;
+            }
+            ViewData["SIGUIENTE"] = siguiente;
+            ViewData["ULTIMO"] = numRegistros;
+            ViewData["ANTERIOR"] = anterior;
+            Departamento dept = await this.repo.FindDepartamento(iddept);
+            ModelEmpleadosOficio model = await this.repo.GetEmpleadosDepartamentoAsync(iddept, posicion.Value);
+            ViewData["Empleados"] = model;
+            return View(dept);
+
+        }
+        //[HttpPost]
+        //public async Task<IActionResult> DetailsDepartamento(int iddept)
+        //{
+        //    int numRegistros = await this.repo.EmpleadosCountAsync(iddept);
+
+
+        //    Departamento dept = await this.repo.FindDepartamento(iddept);
+        //    ModelEmpleadosOficio model = await this.repo.GetEmpleadosDepartamentoAsync(iddept, 1);
+        //    ViewData["Empleados"] = model;
+        //    return View(dept);
+        //}
+
+        //VERSIÓN CON EF
+        public async Task<IActionResult> DetailsDepartamentoV2(int iddept, int? posicion)
+        {
+            int pActual = posicion ?? 1;
+
+            // Llamamos al repositorio que usa Skip() y Take()
+            ModelEmpleadosOficio model = await this.repo.GetEmpleadosDepartamentoEFAsync(iddept, pActual);
+
+            // Obtenemos el departamento para los detalles de la cabecera
+            Departamento dept = await this.repo.FindDepartamento(iddept);
+
+            // Configuramos la navegación para los botones
+            ViewData["ULTIMO"] = model.NumeroRegistros;
+            ViewData["SIGUIENTE"] = Math.Min(pActual + 1, model.NumeroRegistros);
+            ViewData["ANTERIOR"] = Math.Max(pActual - 1, 1);
+            ViewData["POSICION_ACTUAL"] = pActual;
+            ViewData["Empleados"] = model;
+
+            return View(dept);
+        }
+
+
+
+        //===============LO MISMO PERO CON PLANTILLA Y HOSPITAL=====================
+        public async Task<IActionResult> DetailsHospital(int idhospital, int? posicion)
+        {
+            int numRegistros = await this.repo.EmpleadosPlantillaCountAsync(idhospital);
+
+            if (posicion == null)
+            {
+                posicion = 1;
+            }
+            int siguiente = posicion.Value + 1;
+            if (siguiente > numRegistros)
+            {
+                siguiente = numRegistros;
+            }
+            int anterior = posicion.Value - 1;
+            if (anterior < 1)
+            {
+                anterior = 1;
+            }
+            ViewData["SIGUIENTE"] = siguiente;
+            ViewData["ULTIMO"] = numRegistros;
+            ViewData["ANTERIOR"] = anterior;
+            Hospital hospi = await this.repo.FindHospital(idhospital);
+            ModelPlantillaHospital model = await this.repo.GetEmpleadosPlantillaHospitalAsync(idhospital, posicion.Value);
+            ViewData["EMPLEADOSPLANTILLA"] = model;
+            return View(hospi);
+
+        }
+
+
 
 
 

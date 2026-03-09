@@ -1,4 +1,4 @@
-﻿@model List<Departamento>
+﻿@model List<Hospital>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -6,12 +6,12 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        DEPARTAMENTOS
+                        HOSPITALES
                     </a>
                     <ul class="dropdown-menu">
-                        @foreach (Departamento dept in Model)
+                        @foreach (Hospital hosp in Model)
                         {
-                            <li><a class="dropdown-item " asp-controller="Paginacion" asp-action="DetailsDepartamento" asp-route-iddept="@dept.IdDepartamento">@dept.Nombre</a></li>
+                            <li><a class="dropdown-item " asp-controller="Paginacion" asp-action="DetailsHospital" asp-route-idhospital="@hosp.IdHospital">@hosp.Nombre</a></li>
                         }
                     </ul>
                 </li>

@@ -1,0 +1,96 @@
+﻿@model MvcCorePaginacionRegistros.Models.Departamento
+
+@{
+    ViewData["Title"] = "DetailsDepartamento";
+    ModelEmpleadosOficio empleados = (ModelEmpleadosOficio)ViewData["Empleados"];
+}
+@{
+
+    int numPagina = 1;
+}
+
+<h1 style="color:orangered">DetailsDepartamento v2 con EF</h1>
+<div>
+    <h4>Departamento</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdDepartamento)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdDepartamento)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Localidad)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Localidad)
+        </dd>
+    </dl>
+@* 
+    <form asp-action="DetailsDepartamento">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form> *@
+</div>
+@if (empleados != null)
+{
+    <div class="mt-4">
+        <ul class="pagination pagination-lg justify-content-center">
+            <li class="page-item">
+                <a class="page-link shadow-sm" asp-controller="Paginacion" asp-action="DetailsDepartamentoV2"
+                   asp-route-iddept="@Model.IdDepartamento" asp-route-posicion="1">
+                    <i class="bi bi-chevron-double-left"></i> Primero
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link shadow-sm" asp-controller="Paginacion" asp-action="DetailsDepartamentoV2"
+                   asp-route-iddept="@Model.IdDepartamento" asp-route-posicion="@ViewData["ANTERIOR"]">
+                    Anterior
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link shadow-sm" asp-controller="Paginacion" asp-action="DetailsDepartamentoV2"
+                   asp-route-iddept="@Model.IdDepartamento" asp-route-posicion="@ViewData["SIGUIENTE"]">
+                    Siguiente
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link shadow-sm" asp-controller="Paginacion" asp-action="DetailsDepartamentoV2"
+                   asp-route-iddept="@Model.IdDepartamento" asp-route-posicion="@ViewData["ULTIMO"]">
+                    Último <i class="bi bi-chevron-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <table class="table table-warning">
+        <thead>
+            <tr>
+                <th>IdDept</th>
+                <th>IdEmpleado</th>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Empleado emp in empleados.Empleados)
+            {
+                <tr>
+                    <td>@emp.IdDepartamento</td>
+                    <td>@emp.IdEmpleado</td>
+                    <td>@emp.Apellido</td>
+                    <td>@emp.Oficio</td>
+                    <td>@emp.Salario</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}

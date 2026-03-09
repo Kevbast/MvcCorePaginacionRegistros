@@ -1,0 +1,95 @@
+﻿@model Hospital
+
+@{
+    ViewData["Title"] = "DetailsDepartamento";
+    ModelPlantillaHospital empleadosplantilla = (ModelPlantillaHospital)ViewData["EMPLEADOSPLANTILLA"];
+}
+@{
+
+    int numPagina = 1;
+}
+
+<h1 style="color:blueviolet">DetailsDepartamento CON PROCEDURE</h1>
+
+<div>
+    <h4>HOSPITAL</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdHospital)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Direccion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Telefono)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NumCama)
+        </dt>
+    </dl>
+
+</div>
+@if (empleadosplantilla != null)
+{
+    <div class="mt-4">
+        <ul class="pagination pagination-lg justify-content-center">
+            <li class="page-item">
+                @* MIRAR BIEN EL ACTION Y EL ROUTE AL CAMBIARLO *@
+                <a class="page-link shadow-sm" asp-controller="Paginacion" asp-action="DetailsHospital"
+                   asp-route-idhospital="@Model.IdHospital" asp-route-posicion="1">
+                    <i class="bi bi-chevron-double-left"></i> Primero
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link shadow-sm" asp-controller="Paginacion" asp-action="DetailsHospital"
+                   asp-route-idhospital="@Model.IdHospital" asp-route-posicion="@ViewData["ANTERIOR"]">
+                    Anterior
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link shadow-sm" asp-controller="Paginacion" asp-action="DetailsHospital"
+                   asp-route-idhospital="@Model.IdHospital" asp-route-posicion="@ViewData["SIGUIENTE"]">
+                    Siguiente
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link shadow-sm" asp-controller="Paginacion" asp-action="DetailsHospital"
+                   asp-route-idhospital="@Model.IdHospital" asp-route-posicion="@ViewData["ULTIMO"]">
+                    Último <i class="bi bi-chevron-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <table class="table table-warning">
+        <thead>
+            <tr>
+                <th>IDHOSPITAL</th>
+                <th>SALA_COD</th>
+                <th>EMP_NO</th>
+                <th>APELLIDO</th>
+                @* <th>TURNO</th> *@
+                <th>FUNCION</th>
+                <th>SALARIO</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Plantilla empPlantilla in empleadosplantilla.EmpleadosPlantilla)
+            {
+                <tr>
+                    <td>@empPlantilla.IdHospital</td>
+                    <td>@empPlantilla.IdSala</td>
+                    <td>@empPlantilla.IdEmpleado</td>
+                    <td>@empPlantilla.Apellido</td>
+                    @* <td>@empPlantilla.Turno</td> NO LO PONEMOS EN LA CONSULTA DEL PROCEDURE*@
+                    <td>@empPlantilla.Funcion</td>
+                    <td>@empPlantilla.Salario</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
